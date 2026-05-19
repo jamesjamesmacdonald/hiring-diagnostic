@@ -187,6 +187,8 @@ function StageStep({
 }) {
   const questions = questionsForStage(stage);
   const isLastStage = stageNumber === FUNNEL_STAGES.length;
+  const answeredCount = questions.filter((q) => answers[q.id]).length;
+  const allAnswered = answeredCount === questions.length;
   return (
     <section>
       <p className="text-eyebrow text-blue uppercase mb-2">
@@ -208,19 +210,27 @@ function StageStep({
           />
         ))}
       </div>
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center gap-3">
         <button
           onClick={onBack}
           className="px-4 py-2 text-navy font-medium hover:text-blue"
         >
           &larr; Back
         </button>
-        <button
-          onClick={onNext}
-          className="px-6 py-3 bg-navy text-white font-bold rounded-md hover:bg-blue transition"
-        >
-          {isLastStage ? 'Final step' : 'Next stage'} &rarr;
-        </button>
+        <div className="text-right">
+          {!allAnswered && (
+            <p className="text-xs text-grey-medium mb-1">
+              {answeredCount} of {questions.length} answered
+            </p>
+          )}
+          <button
+            onClick={onNext}
+            disabled={!allAnswered}
+            className="px-6 py-3 bg-navy text-white font-bold rounded-md hover:bg-blue disabled:bg-grey-medium disabled:cursor-not-allowed transition"
+          >
+            {isLastStage ? 'Final step' : 'Next stage'} &rarr;
+          </button>
+        </div>
       </div>
     </section>
   );

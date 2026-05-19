@@ -157,6 +157,20 @@ export default async function ResultPage({ params }: { params: Params }) {
           const cta = ntpCtaFor(r.company_stage, worstScore);
           return cta ? <NTPCallout cta={cta} /> : null;
         })()}
+
+        <hr className="my-10 border-grey-light" />
+
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <p className="text-sm text-grey-medium">
+            Want to run this for a different role? Re-take in 7 minutes.
+          </p>
+          <a
+            href="/diagnostic"
+            className="px-4 py-2 text-navy font-bold border border-navy rounded-md hover:bg-grey-light transition"
+          >
+            Run it again
+          </a>
+        </div>
       </div>
     </main>
   );
