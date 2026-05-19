@@ -15,6 +15,14 @@ export default function Home() {
             Building Tech Teams Episode 1.
           </p>
         </div>
+        <div className="mt-8">
+          <a
+            href="/diagnostic"
+            className="text-sm text-blue underline hover:text-navy"
+          >
+            Preview the diagnostic flow
+          </a>
+        </div>
       </div>
     </main>
   );
