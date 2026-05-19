@@ -1,20 +1,28 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import type {
   DiagnosticContext,
-  Response,
   FunnelStage,
+  QuestionAnswer,
+  Response,
 } from '@/lib/types';
 import {
   FUNNEL_STAGES,
-  STAGE_LABELS,
+  RESPONSE_SCORES,
   STAGE_DESCRIPTIONS,
+  STAGE_LABELS,
 } from '@/lib/types';
-import { questionsForStage } from '@/lib/questions';
+import { QUESTIONS, questionsForStage } from '@/lib/questions';
+import { buildStageScores } from '@/lib/scoring';
 import StageContext from '@/components/diagnostic/StageContext';
 import QuestionCard from '@/components/diagnostic/QuestionCard';
 import LiveFunnel from '@/components/diagnostic/LiveFunnel';
+
+// Static map of questionId → stage. Built once at module load from the question library.
+const QUESTION_TO_STAGE: Record<string, FunnelStage> = Object.fromEntries(
+  QUESTIONS.map((q) => [q.id, q.stage])
+);
 
 // Step 1 = context picker. Steps 2-6 = ALIGN..ONBOARD. Step 7 = forcing prompt (lands Day 5).
 const TOTAL_STEPS = 7;
@@ -29,6 +37,17 @@ export default function DiagnosticPage() {
     stageIndex >= 0 && stageIndex < FUNNEL_STAGES.length
       ? FUNNEL_STAGES[stageIndex]
       : null;
+
+  const stageScores = useMemo(() => {
+    const answersArray: QuestionAnswer[] = Object.entries(answers).map(
+      ([questionId, response]) => ({
+        questionId,
+        response,
+        score: RESPONSE_SCORES[response],
+      })
+    );
+    return buildStageScores(answersArray, QUESTION_TO_STAGE);
+  }, [answers]);
 
   function handleContextSubmit(ctx: DiagnosticContext) {
     setContext(ctx);
@@ -70,7 +89,10 @@ export default function DiagnosticPage() {
           </div>
           <div className="hidden md:block">
             <div className="sticky top-10">
-              <LiveFunnel currentStage={currentStage} />
+              <LiveFunnel
+                currentStage={currentStage}
+                stageScores={stageScores}
+              />
             </div>
           </div>
         </div>
