@@ -135,6 +135,23 @@ For your conversation with Michael ahead of BTT Episode 1.
 
 ---
 
+## Post-Day-14 polish round
+
+After "Day 14 complete" I asked myself what else was worth doing before James gets back. Shipped:
+
+- **Library seeded.** 10 contributed diagnostics across stages and sectors. Peer benchmark now works for `seed/engineer` (60% no, 40% partial on align-1, etc.) since that combo has 5 entries. `pg_cron` matview refresh fires nightly to keep this fresh.
+- **Stage validation.** `/diagnostic` Next button now disabled until all 4 stage questions are answered. Inline "X of 4 answered" counter when incomplete. Stops users blowing through with 0 answers.
+- **Result page UX.**
+  - `loading.tsx` during the 2-3s server fetch
+  - `not-found.tsx` for stale share links (renders cleanly, but Next 16 returns 200 instead of 404 — minor SEO blemish; per-user result URLs aren't meant to be indexed)
+  - `error.tsx` for unexpected server errors (Try Again + Start Fresh CTAs)
+  - "Run it again" link in the footer
+- **Global `not-found.tsx`** at `app/not-found.tsx` for any unmapped path.
+- **Favicon** at `app/icon.svg` (brand-coloured funnel mark).
+- **Open Graph + Twitter meta** in `app/layout.tsx`. `metadataBase` set to `NEXT_PUBLIC_SITE_URL` so absolute URLs work everywhere.
+- **Custom OG image attempted via `next/og`.** Build broke on a Satori font resolution issue in Next 16. Reverted. Sharing now gives a text-only summary card (still respects the openGraph title/description set in layout). Building a real image is a 30-minute V2 task if it matters for launch.
+- **PDF table-artefact smoke test.** Generated a diagnostic where ASSESS was the worst leak so the AI picked `assess-weighted-scorecard` (the artefact with a markdown table). PDF rendered cleanly at 4 pages.
+
 ## Final state checklist (for when you sit down to use this)
 
 - **Build**: `npm run build` clean. 10 routes (3 static + 7 dynamic).
