@@ -2,7 +2,12 @@
 // Edits one-sentence success criteria. Per BUILD_SPEC.md Section 10.
 
 import { NextResponse } from 'next/server';
-import { getAnthropic, MODEL, textFromMessage } from '@/lib/claude';
+import {
+  getAnthropic,
+  MODEL,
+  parseJsonFromClaude,
+  textFromMessage,
+} from '@/lib/claude';
 
 export const runtime = 'nodejs';
 
@@ -28,11 +33,11 @@ VOICE RULES for your rewrite:
 - Short sentences.
 - No hedging or filler.
 
-OUTPUT (JSON only, no prose):
+OUTPUT (JSON only, no prose, no markdown code fences):
 {
   "accepted": true | false,
-  "feedback": "one sentence explaining why if not accepted",
-  "rewrite": "your rewritten version if not accepted, in James's voice"
+  "feedback": "one sentence explaining why if not accepted, otherwise empty string",
+  "rewrite": "your rewritten version if not accepted, in James's voice, otherwise empty string"
 }`;
 
 type Result = {
@@ -40,6 +45,16 @@ type Result = {
   feedback: string;
   rewrite: string;
 };
+
+type RawResult = Partial<Record<keyof Result, unknown>>;
+
+function normalise(raw: RawResult): Result {
+  return {
+    accepted: Boolean(raw.accepted),
+    feedback: typeof raw.feedback === 'string' ? raw.feedback : '',
+    rewrite: typeof raw.rewrite === 'string' ? raw.rewrite : '',
+  };
+}
 
 export async function POST(req: Request) {
   let sentence: string;
@@ -66,17 +81,15 @@ export async function POST(req: Request) {
     });
 
     const text = textFromMessage(msg);
-    let parsed: Result;
-    try {
-      parsed = JSON.parse(text);
-    } catch {
+    const raw = parseJsonFromClaude<RawResult>(text);
+    if (!raw) {
       return NextResponse.json(
         { error: 'AI returned invalid JSON', raw: text },
         { status: 502 }
       );
     }
 
-    return NextResponse.json(parsed);
+    return NextResponse.json(normalise(raw));
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error';
     return NextResponse.json({ error: message }, { status: 500 });

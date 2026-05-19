@@ -22,3 +22,23 @@ export function textFromMessage(msg: Anthropic.Messages.Message): string {
     .map((c) => c.text)
     .join('');
 }
+
+// Strip markdown code fences (```json ... ``` or ``` ... ```) that Claude
+// sometimes wraps around JSON output even when told not to.
+export function stripCodeFences(text: string): string {
+  return text
+    .trim()
+    .replace(/^```(?:json|JSON)?\s*\n?/, '')
+    .replace(/\n?\s*```\s*$/, '')
+    .trim();
+}
+
+// Parse JSON from a Claude response, stripping fences first.
+// Returns null on parse failure.
+export function parseJsonFromClaude<T>(text: string): T | null {
+  try {
+    return JSON.parse(stripCodeFences(text)) as T;
+  } catch {
+    return null;
+  }
+}
