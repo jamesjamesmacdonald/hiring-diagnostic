@@ -28,6 +28,7 @@ import type {
 import FunnelVisual from '@/components/result/FunnelVisual';
 import RecommendationBlock from '@/components/result/Recommendation';
 import ArtefactBlock from '@/components/result/ArtefactBlock';
+import PDFDownload from '@/components/result/PDFDownload';
 
 type DiagnosticRow = {
   id: string;
@@ -129,10 +130,12 @@ export default async function ResultPage({ params }: { params: Params }) {
 
         {artefact && <ArtefactBlock artefact={artefact} />}
 
+        <PDFDownload resultId={r.id} />
+
         <hr className="my-10 border-grey-light" />
 
         <p className="text-xs text-grey-medium">
-          Email me the PDF and library contribution land on Day 8 and Day 10.
+          Library contribution lands on Day 10.
         </p>
       </div>
     </main>
