@@ -91,11 +91,30 @@ export default function DiagnosticPage() {
               <ForcingPrompt
                 initial={forcingPrompt}
                 onBack={back}
-                onComplete={(s) => {
+                onComplete={async (s) => {
                   setForcingPrompt(s);
-                  // Day 6 wires this onComplete to POST and redirect.
+                  const res = await fetch('/api/diagnostic/submit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      context,
+                      answers: Object.entries(answers).map(
+                        ([questionId, response]) => ({
+                          questionId,
+                          response,
+                        })
+                      ),
+                      forcingPrompt: s,
+                    }),
+                  });
+                  if (!res.ok) {
+                    const body = await res.json().catch(() => ({}));
+                    throw new Error(body.error || `HTTP ${res.status}`);
+                  }
+                  const { id } = await res.json();
+                  window.location.href = `/diagnostic/result/${id}`;
                 }}
-                submitLabel="Submit"
+                submitLabel="See my result"
               />
             )}
           </div>

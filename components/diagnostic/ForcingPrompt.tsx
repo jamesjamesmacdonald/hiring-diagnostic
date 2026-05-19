@@ -44,7 +44,13 @@ export default function ForcingPrompt({
       const data: Result = await res.json();
       setResult(data);
       if (data.accepted) {
-        await complete(text);
+        try {
+          await complete(text);
+        } catch (innerErr) {
+          setError(
+            innerErr instanceof Error ? innerErr.message : 'Submit failed'
+          );
+        }
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Check failed');
@@ -66,7 +72,11 @@ export default function ForcingPrompt({
     if (!result?.rewrite) return;
     setSentence(result.rewrite);
     setResult({ ...result, accepted: true });
-    await complete(result.rewrite);
+    try {
+      await complete(result.rewrite);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Submit failed');
+    }
   }
 
   function handleSubmit(e: React.FormEvent) {
