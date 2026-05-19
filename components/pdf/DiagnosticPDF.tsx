@@ -1,6 +1,6 @@
 // 4-page A4 PDF rendered server-side via @react-pdf/renderer.
 // Pages: cover, funnel, fix, artefact. Mobile rendering of the artefact
-// markdown is lossy by design — we strip markdown to plain text so the
+// markdown is lossy by design. We strip markdown to plain text so the
 // PDF stays clean. The web result page already shows the rich version.
 
 import {

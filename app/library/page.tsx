@@ -65,7 +65,7 @@ export default async function LibraryPage({
         </h1>
         <p className="text-base text-black mb-8">
           Every funnel here was contributed by a founder who ran the
-          diagnostic. No names. No companies. Just the pattern.
+          diagnostic. No names. No companies. Pattern only.
         </p>
 
         <LibraryFilters />
