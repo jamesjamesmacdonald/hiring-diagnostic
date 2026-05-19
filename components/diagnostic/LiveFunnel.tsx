@@ -11,6 +11,37 @@ type Props = {
 // Funnel widths per BUILD_SPEC.md Section 8: ALIGN 100%, narrowing 5% per stage.
 const WIDTH_PCT = [100, 95, 90, 85, 80];
 
+// Compact horizontal funnel for mobile, per spec Section 6.
+export function CompactLiveFunnel({ currentStage, stageScores }: Props) {
+  return (
+    <div className="grid grid-cols-5 gap-1 mb-4">
+      {FUNNEL_STAGES.map((stage) => {
+        const score =
+          stageScores.find((s) => s.stage === stage)?.score ?? 0;
+        const isCurrent = stage === currentStage;
+        return (
+          <div
+            key={stage}
+            className={[
+              'px-1 py-2 rounded text-center text-[10px] font-bold border-l-4',
+              isCurrent
+                ? 'bg-navy text-white border-gold'
+                : 'bg-grey-light text-navy border-grey-medium',
+            ].join(' ')}
+          >
+            <p className="truncate">{STAGE_LABELS[stage]}</p>
+            <p
+              className={`tabular-nums text-sm ${isCurrent ? 'text-gold' : 'text-navy'}`}
+            >
+              {score}
+            </p>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function LiveFunnel({ currentStage, stageScores }: Props) {
   return (
     <aside aria-label="Your hiring funnel">

@@ -17,7 +17,9 @@ import { QUESTIONS, questionsForStage } from '@/lib/questions';
 import { buildStageScores } from '@/lib/scoring';
 import StageContext from '@/components/diagnostic/StageContext';
 import QuestionCard from '@/components/diagnostic/QuestionCard';
-import LiveFunnel from '@/components/diagnostic/LiveFunnel';
+import LiveFunnel, {
+  CompactLiveFunnel,
+} from '@/components/diagnostic/LiveFunnel';
 import ForcingPrompt from '@/components/diagnostic/ForcingPrompt';
 
 // Static map of questionId → stage. Built once at module load from the question library.
@@ -71,6 +73,15 @@ export default function DiagnosticPage() {
   return (
     <main className="min-h-screen bg-white">
       <div className="max-w-page mx-auto px-6 py-10">
+        {/* Mobile-only compact funnel above content, hidden once context is empty */}
+        {context && (
+          <div className="md:hidden">
+            <CompactLiveFunnel
+              currentStage={currentStage}
+              stageScores={stageScores}
+            />
+          </div>
+        )}
         <div className="md:grid md:grid-cols-[1fr_280px] md:gap-10">
           <div className="max-w-content mx-auto md:mx-0 w-full">
             {step === 1 && (

@@ -95,4 +95,57 @@ These shape the rest of the build. Flip any of them and I redo the affected day.
 - QuestionCard takes an optional `benchmarkContext` prop; PeerBenchmark fetches per question when the user picks an answer.
 - **`pg_cron` enabled on the Supabase project**, scheduled `refresh-question-aggregates` to run daily at `17 3 * * *` UTC (3:17am UTC, ~1:17pm AEST). Off the round minute deliberately. To inspect: `SELECT * FROM cron.job;` in the SQL editor. To change schedule: `SELECT cron.alter_job(jobid, schedule := '...');`
 
+### Day 13 — E2E + voice audit
+
+- Voice sweep across `app/` and `components/` for em dashes, banned filler, and banned hedging words. Two real hits:
+  - `components/pdf/DiagnosticPDF.tsx` had an em dash in a code comment. Fixed.
+  - `app/library/page.tsx` said "Just the pattern" — banned filler. Changed to "Pattern only".
+- Remaining banned words in `app/api/coaching/forcing-prompt/route.ts` are inside the Claude system prompt teaching it what NOT to do. Intentional.
+- End-to-end smoke test (Series A + leadership + Melbourne diagnostic):
+  - Submit returned id ✓
+  - Result page rendered with NTPCallout (Series A worst leak ALIGN below 50) ✓
+  - PDF generated, 4 pages, valid ✓
+  - Contribute marked the row ✓
+  - Library filter `?stage=series-a` returned the row ✓
+  - Peer benchmark returned `[]` (expected; n=1, threshold 5) ✓
+- Tried the documented "main branch" workaround for preview env vars. Still failed with the same `git_branch_required` error. Vercel CLI bug runs deeper than the docs claim. Task #13 stays open — production deploys are unaffected.
+
+### Day 14 — Final polish + ship
+
+- Landing page upgraded from "Coming soon" to a proper V1 landing: headline, one-sentence pitch in James's voice, primary "Start the diagnostic" CTA, secondary library link, James/NTP/BTT credit line.
+- Added `CompactLiveFunnel` (named export from LiveFunnel.tsx). 5-stage horizontal grid for mobile, rendered above the question content per spec Section 6. Desktop sidebar untouched.
+- All 14 days deployed. Production URL: https://hiring-diagnostic.vercel.app.
+
+---
+
+## Launch coordination guide
+
+For your conversation with Michael ahead of BTT Episode 1.
+
+1. **The URL**: https://hiring-diagnostic.vercel.app. This is your demo URL. Stays live regardless of what Michael decides.
+2. **What to ask Michael for** (the four scenarios from BUILD_SPEC.md Section 17):
+   - Option A — `hiring.batko.ai` custom domain: he adds a CNAME `hiring.batko.ai → cname.vercel-dns.com`. No collaborator invite needed. The Vercel URL also keeps working.
+   - Option B — `batko.ai/operate/hiring` subpath that links out to the Vercel URL: zero work for Michael, less technically clean.
+   - Option C — Neither, just co-promo via BTT Ep 1.
+3. **Recommended pitch script**: "Working tool at [URL]. Spend 7 minutes running it as a founder would. If it lands, we point hiring.batko.ai at it for Ep 1."
+4. **Pre-launch checklist**:
+   - [ ] Tasks #11 (revoke PAT), #19 (Vercel GitHub auto-deploy), #34 (beta-test outreach), #35 (replace NTP mailto: links) done.
+   - [ ] At least 5 contributed library entries seeded (so peer benchmarking has something to show on launch day). Easiest path: do 5 diagnostics yourself with different stage/role combos, mark each as contributed.
+   - [ ] Re-test once after seeding to make sure the matview refresh fired and benchmark callouts appear.
+
+---
+
+## Final state checklist (for when you sit down to use this)
+
+- **Build**: `npm run build` clean. 10 routes (3 static + 7 dynamic).
+- **Production**: live at https://hiring-diagnostic.vercel.app. Every day's commit deployed.
+- **GitHub**: repo public at https://github.com/jamesjamesmacdonald/hiring-diagnostic.
+- **Supabase**: schema applied, `pg_cron` enabled, nightly matview refresh scheduled.
+- **Vercel**: Production + Development env vars populated. Preview env vars NOT populated (CLI bug, task #13).
+- **Anthropic**: API key set. `claude-sonnet-4-6` used by both coaching routes.
+- **AI Jobs Index**: API key blank. Salary callout shows the documented fallback notice.
+
+If you want to flip any of the upfront assumptions at the top, the affected components are tagged in their headers.
+
+
 
