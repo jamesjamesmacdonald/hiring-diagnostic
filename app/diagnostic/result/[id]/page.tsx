@@ -29,6 +29,8 @@ import FunnelVisual from '@/components/result/FunnelVisual';
 import RecommendationBlock from '@/components/result/Recommendation';
 import ArtefactBlock from '@/components/result/ArtefactBlock';
 import PDFDownload from '@/components/result/PDFDownload';
+import SalaryCallout from '@/components/result/SalaryCallout';
+import { fetchSalaryData } from '@/lib/salary';
 
 type DiagnosticRow = {
   id: string;
@@ -82,6 +84,13 @@ export default async function ResultPage({ params }: { params: Params }) {
   const rec = recommendationById(r.recommendation_id);
   const artefact = rec ? artefactById(rec.artefactId) : undefined;
 
+  // Salary data: only relevant when the user gave a role title and CLOSE is
+  // the worst leak. Otherwise we do not surface it.
+  const showSalary = r.worst_leak === 'close' && Boolean(r.role_title);
+  const salaryData = showSalary
+    ? await fetchSalaryData(r.role_title ?? '', r.region)
+    : null;
+
   const dateLabel = new Date(r.created_at).toLocaleDateString('en-AU', {
     day: 'numeric',
     month: 'long',
@@ -126,6 +135,14 @@ export default async function ResultPage({ params }: { params: Params }) {
           <p className="text-status-leaking mb-8">
             Recommendation not found for id {r.recommendation_id}.
           </p>
+        )}
+
+        {showSalary && (
+          <SalaryCallout
+            data={salaryData}
+            role={r.role_title ?? ''}
+            region={r.region}
+          />
         )}
 
         {artefact && <ArtefactBlock artefact={artefact} />}
