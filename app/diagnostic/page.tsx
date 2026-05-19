@@ -18,6 +18,7 @@ import { buildStageScores } from '@/lib/scoring';
 import StageContext from '@/components/diagnostic/StageContext';
 import QuestionCard from '@/components/diagnostic/QuestionCard';
 import LiveFunnel from '@/components/diagnostic/LiveFunnel';
+import ForcingPrompt from '@/components/diagnostic/ForcingPrompt';
 
 // Static map of questionId → stage. Built once at module load from the question library.
 const QUESTION_TO_STAGE: Record<string, FunnelStage> = Object.fromEntries(
@@ -31,6 +32,7 @@ export default function DiagnosticPage() {
   const [step, setStep] = useState(1);
   const [context, setContext] = useState<DiagnosticContext | null>(null);
   const [answers, setAnswers] = useState<Record<string, Response>>({});
+  const [forcingPrompt, setForcingPrompt] = useState('');
 
   const stageIndex = step - 2;
   const currentStage: FunnelStage | null =
@@ -85,7 +87,17 @@ export default function DiagnosticPage() {
                 onNext={next}
               />
             )}
-            {step === TOTAL_STEPS && <Step7Placeholder onBack={back} />}
+            {step === TOTAL_STEPS && (
+              <ForcingPrompt
+                initial={forcingPrompt}
+                onBack={back}
+                onComplete={(s) => {
+                  setForcingPrompt(s);
+                  // Day 6 wires this onComplete to POST and redirect.
+                }}
+                submitLabel="Submit"
+              />
+            )}
           </div>
           <div className="hidden md:block">
             <div className="sticky top-10">
@@ -177,23 +189,3 @@ function StageStep({
   );
 }
 
-function Step7Placeholder({ onBack }: { onBack: () => void }) {
-  return (
-    <section>
-      <p className="text-eyebrow text-blue uppercase mb-2">Final step</p>
-      <h1 className="text-3xl font-bold text-navy mb-4">
-        Write your success criterion.
-      </h1>
-      <p className="text-base text-black mb-8">
-        This step wires up on Day 5 with the AI rewrite check. The shell is in
-        place.
-      </p>
-      <button
-        onClick={onBack}
-        className="px-4 py-2 text-navy font-medium hover:text-blue"
-      >
-        &larr; Back
-      </button>
-    </section>
-  );
-}
