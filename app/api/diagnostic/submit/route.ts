@@ -12,7 +12,7 @@ import type {
 } from '@/lib/types';
 import { RESPONSE_SCORES } from '@/lib/types';
 import { QUESTIONS } from '@/lib/questions';
-import { recommendationsForStage } from '@/lib/recommendations';
+import { pickRecommendation } from '@/lib/recommendation-picker';
 import { buildStageScores, worstLeak } from '@/lib/scoring';
 import { getSupabase } from '@/lib/supabase';
 
@@ -73,13 +73,11 @@ export async function POST(req: Request) {
   const stageScores = buildStageScores(fullAnswers, QUESTION_TO_STAGE);
   const worst = worstLeak(stageScores);
 
-  const rec = recommendationsForStage(worst.stage)[0];
-  if (!rec) {
-    return NextResponse.json(
-      { error: `No recommendation for stage ${worst.stage}` },
-      { status: 500 }
-    );
-  }
+  // Claude picks from the library. Falls back to first recommendation if AI fails.
+  const worstAnswers = fullAnswers.filter(
+    (a) => QUESTION_TO_STAGE[a.questionId] === worst.stage
+  );
+  const pick = await pickRecommendation(worst.stage, worstAnswers);
 
   const scoreFor = (stage: FunnelStage) =>
     stageScores.find((s) => s.stage === stage)?.score ?? 0;
@@ -98,7 +96,7 @@ export async function POST(req: Request) {
       close_score: scoreFor('close'),
       onboard_score: scoreFor('onboard'),
       worst_leak: worst.stage,
-      recommendation_id: rec.id,
+      recommendation_id: pick.selectedRecommendationId,
       forcing_prompt: body.forcingPrompt ?? null,
       answers: fullAnswers,
       email: body.email ?? null,
