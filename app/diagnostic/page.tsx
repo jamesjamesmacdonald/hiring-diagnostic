@@ -85,6 +85,10 @@ export default function DiagnosticPage() {
                 onSelect={handleSelect}
                 onBack={back}
                 onNext={next}
+                benchmarkContext={{
+                  stage: context.stage,
+                  role: context.roleType,
+                }}
               />
             )}
             {step === TOTAL_STEPS && (
@@ -160,6 +164,7 @@ function StageStep({
   onSelect,
   onBack,
   onNext,
+  benchmarkContext,
 }: {
   stage: FunnelStage;
   stageNumber: number;
@@ -167,6 +172,7 @@ function StageStep({
   onSelect: (questionId: string, response: Response) => void;
   onBack: () => void;
   onNext: () => void;
+  benchmarkContext: { stage: import('@/lib/types').Stage; role: string };
 }) {
   const questions = questionsForStage(stage);
   const isLastStage = stageNumber === FUNNEL_STAGES.length;
@@ -187,6 +193,7 @@ function StageStep({
             index={idx}
             selected={answers[q.id] ?? null}
             onSelect={(r) => onSelect(q.id, r)}
+            benchmarkContext={benchmarkContext}
           />
         ))}
       </div>

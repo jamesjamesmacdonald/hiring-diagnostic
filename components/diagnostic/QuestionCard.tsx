@@ -1,13 +1,16 @@
 'use client';
 
-import type { Question, Response } from '@/lib/types';
+import type { Question, Response, Stage } from '@/lib/types';
 import { RESPONSE_OPTIONS } from '@/lib/types';
+import PeerBenchmark from './PeerBenchmark';
 
 type Props = {
   question: Question;
   selected: Response | null;
   onSelect: (response: Response) => void;
   index: number;
+  // Optional context: when present, PeerBenchmark fetches and renders inline.
+  benchmarkContext?: { stage: Stage; role: string };
 };
 
 export default function QuestionCard({
@@ -15,6 +18,7 @@ export default function QuestionCard({
   selected,
   onSelect,
   index,
+  benchmarkContext,
 }: Props) {
   return (
     <fieldset className="border border-grey-light rounded-lg p-5 bg-white">
@@ -49,6 +53,14 @@ export default function QuestionCard({
         })}
       </div>
       <p className="text-xs text-grey-medium">Source: {question.source}</p>
+      {benchmarkContext && (
+        <PeerBenchmark
+          stage={benchmarkContext.stage}
+          role={benchmarkContext.role}
+          questionId={question.id}
+          selectedResponse={selected}
+        />
+      )}
     </fieldset>
   );
 }
