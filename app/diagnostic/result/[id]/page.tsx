@@ -30,6 +30,8 @@ import RecommendationBlock from '@/components/result/Recommendation';
 import ArtefactBlock from '@/components/result/ArtefactBlock';
 import PDFDownload from '@/components/result/PDFDownload';
 import SalaryCallout from '@/components/result/SalaryCallout';
+import LibraryUnlock from '@/components/result/LibraryUnlock';
+import NTPCallout, { ntpCtaFor } from '@/components/result/NTPCallout';
 import { fetchSalaryData } from '@/lib/salary';
 
 type DiagnosticRow = {
@@ -149,11 +151,12 @@ export default async function ResultPage({ params }: { params: Params }) {
 
         <PDFDownload resultId={r.id} />
 
-        <hr className="my-10 border-grey-light" />
+        <LibraryUnlock resultId={r.id} />
 
-        <p className="text-xs text-grey-medium">
-          Library contribution lands on Day 10.
-        </p>
+        {(() => {
+          const cta = ntpCtaFor(r.company_stage, worstScore);
+          return cta ? <NTPCallout cta={cta} /> : null;
+        })()}
       </div>
     </main>
   );
