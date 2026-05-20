@@ -187,7 +187,7 @@ James provided 6 Australian salary guide PDFs in `~/Documents/Research - Competi
 - **GTM/ops roles excluded.** These are tech salary guides; sales/CS coverage was thin and mixed base vs OTE. The table is engineering/product/data/leadership. If a user's role title matches nothing, the callout simply does not render.
 - **low/median/high mapped to p25/median/p75** in the `SalaryData` shape. Approximate — guide "low/high" is closer to a full range than a strict quartile. The callout labels them "Low / Median / High" honestly.
 - The old `lib/salary.ts` API wrapper is gone; it now reads the static table. `SALARY_API_URL/KEY` env vars removed (no API anymore).
-- The raw PDFs stay in `~/Documents/Research - Competitors` (outside the repo, not committed). Re-run `/tmp/aggregate-salary.py` to regenerate if guides are refreshed.
+- The raw PDFs stay in `~/Documents/Research - Competitors` (outside the repo, not committed). The aggregation script is committed at `scripts/aggregate-salary.py` — it holds the per-guide derived figures and prints the averaged table. Re-run it (`python3 scripts/aggregate-salary.py`) and update `lib/salary-table.ts` if the guides are refreshed.
 
 Task #36 is now done.
 
