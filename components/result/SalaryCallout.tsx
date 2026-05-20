@@ -1,7 +1,7 @@
 // Inline salary band card. Only used when:
 //   1. The user provided a role title in Step 1, AND
 //   2. The worst leak is CLOSE (live market data is most actionable there).
-// Renders the fallback notice when the AI Jobs Index returns nothing.
+// Renders the fallback notice when no salary data is available.
 
 import type { SalaryData } from '@/lib/types';
 
@@ -21,12 +21,10 @@ export default function SalaryCallout({ data, role, region }: Props) {
   if (!data) {
     return (
       <section className="my-6 p-5 bg-grey-light rounded-md">
-        <p className="text-eyebrow text-blue uppercase mb-2">
-          AI Jobs Index
-        </p>
+        <p className="text-eyebrow text-blue uppercase mb-2">Market data</p>
         <p className="text-sm text-navy">
-          Live AI Jobs Index data is connecting. For now, the recommendation
-          is the same.
+          Live market data is connecting. For now, the recommendation is the
+          same.
         </p>
       </section>
     );
@@ -34,7 +32,7 @@ export default function SalaryCallout({ data, role, region }: Props) {
 
   return (
     <section className="my-6 p-5 bg-blue-light rounded-md">
-      <p className="text-eyebrow text-blue uppercase mb-2">AI Jobs Index</p>
+      <p className="text-eyebrow text-blue uppercase mb-2">Market data</p>
       <h3 className="text-lg font-bold text-navy mb-2">
         Live market data for {role} in {region}
       </h3>
@@ -45,8 +43,8 @@ export default function SalaryCallout({ data, role, region }: Props) {
       </div>
       <p className="text-xs text-grey-medium">
         Anchor your offer to the 60-75th percentile if you are hiring
-        competitively. Source: AI Jobs Index{data.asOf ? `, ${data.asOf}` : ''}
-        {data.sampleSize ? ` (n=${data.sampleSize})` : ''}.
+        competitively. Source: Australian salary guides
+        {data.asOf ? `, ${data.asOf}` : ''}.
       </p>
     </section>
   );

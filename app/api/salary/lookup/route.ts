@@ -1,6 +1,6 @@
 // GET /api/salary/lookup?role=X&region=Y
-// Passthrough to AI Jobs Index. Returns 204 if no data (API key missing or
-// upstream failure). Client should treat 204 as "fallback notice".
+// Passthrough to the salary data source. Returns 204 if no data (key
+// missing or upstream failure). Client should treat 204 as "fallback notice".
 
 import { fetchSalaryData } from '@/lib/salary';
 

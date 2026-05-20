@@ -69,7 +69,7 @@ export const ARTEFACTS: Artefact[] = [
 
 **What we offer**
 
-- Base: $[X], anchored at the [Y]th percentile of [AI Jobs Index data]
+- Base: $[X], anchored at the [Y]th percentile of current market data
 - Equity: [X]% with [Y]-year vest
 - Benefits: Claude Max subscription, AI tooling budget $[X], learning budget $[X]
 
@@ -83,7 +83,7 @@ No CV required.`,
   {
     id: 'attract-sourcing-data-report',
     title: 'Sourcing Channel Recommendation',
-    content: `**Top 3 channels for this role and region** (based on AI Jobs Index placement data, last 90 days):
+    content: `**Top 3 channels for this role and region** (based on placement data, last 90 days):
 
 1. **[Channel 1]** — [why it works for this role]
 2. **[Channel 2]** — [why it works for this role]
@@ -172,7 +172,7 @@ If conversion to interview is above 20%, double down. Below, switch to channel t
 
 **Close.** Great, that helps me put together something that actually works for you. You'll have the offer within 48 hours.
 
-**After the call.** The two answers change the offer. If they raised comp, anchor to a specific AI Jobs Index percentile and explain it. If they raised competing offers, accelerate the timeline. If they raised equity questions, prepare the equity story.
+**After the call.** The two answers change the offer. If they raised comp, anchor to a specific market percentile and explain it. If they raised competing offers, accelerate the timeline. If they raised equity questions, prepare the equity story.
 
 **Send the offer within 48 hours. Decision deadline within 5 days.**`,
   },
@@ -182,7 +182,7 @@ If conversion to interview is above 20%, double down. Below, switch to channel t
     title: 'Comp Benchmarking Report',
     content: `**Role:** [Title]
 **Region:** [Region]
-**Source:** AI Jobs Index, [date]
+**Source:** Australian salary guides, [date]
 
 **Live market data:**
 - 25th percentile: $[X]
@@ -195,7 +195,7 @@ If conversion to interview is above 20%, double down. Below, switch to channel t
 
 **Justification language for the offer letter:**
 
-"Your base of $[X] sits at the [Y]th percentile of the live market for this role in [region], based on AI Jobs Index data as of [date]. We anchor here because [reason: speed, signal, stage]."`,
+"Your base of $[X] sits at the [Y]th percentile of the live market for this role in [region], based on current market data as of [date]. We anchor here because [reason: speed, signal, stage]."`,
   },
 
   {

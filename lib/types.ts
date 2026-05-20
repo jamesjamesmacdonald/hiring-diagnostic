@@ -35,7 +35,7 @@ export interface SalaryData {
   p25: number;
   p75: number;
   currency: 'AUD';
-  source: 'ai-jobs-index';
+  source: 'market-data';
   asOf: string;
   sampleSize?: number;
 }

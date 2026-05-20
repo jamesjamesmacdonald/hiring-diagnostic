@@ -42,11 +42,11 @@ export const RECOMMENDATIONS: Recommendation[] = [
     id: 'attract-sourcing-switch',
     stage: 'attract',
     triggerPattern: "User scored 'no' or 'partial' on attract-2 (sourcing channels) or attract-4 (outreach to named candidates).",
-    headline: 'Switch one channel based on AI Jobs Index placement data',
+    headline: 'Switch one channel based on where similar roles got filled',
     fixScript:
-      "Default sourcing channels return default candidates. AI Jobs Index data shows where similar roles in your sector got filled in the last 90 days. For Australian senior engineering roles at seed-to-Series-A SaaS companies, the data shows the top three sources are warm introductions from current technical employees, technical community engagement (open source contributions, conference talks), and targeted outreach via specialised recruiters. LinkedIn job posts are the fourth source. Pick one of the top three and run it for 30 days.",
+      "Default sourcing channels return default candidates. Placement data shows where similar roles in your sector got filled in the last 90 days. For Australian senior engineering roles at seed-to-Series-A SaaS companies, the data shows the top three sources are warm introductions from current technical employees, technical community engagement (open source contributions, conference talks), and targeted outreach via specialised recruiters. LinkedIn job posts are the fourth source. Pick one of the top three and run it for 30 days.",
     artefactId: 'attract-sourcing-data-report',
-    source: 'AI Jobs Index data plus NTP placement intelligence',
+    source: 'NTP placement intelligence',
   },
 
   // ============ ASSESS ============
@@ -85,12 +85,12 @@ export const RECOMMENDATIONS: Recommendation[] = [
   {
     id: 'close-comp-reposition',
     stage: 'close',
-    triggerPattern: "User scored 'no' or 'partial' on close-2 (comp anchored to AI Jobs Index percentile).",
-    headline: 'Reposition comp to the 60-75th percentile based on AI Jobs Index live data',
+    triggerPattern: "User scored 'no' or 'partial' on close-2 (comp anchored to a market percentile).",
+    headline: 'Reposition comp to the 60-75th percentile based on current market data',
     fixScript:
-      "Off-market comp is the second most common close-stage leak. For your role in your region, AI Jobs Index live data shows the median, 25th, and 75th percentiles. Anchor your offer to the 60-75th percentile if you are hiring competitively. Below that, you lose anyone with another option. Above the 75th, you are paying for noise. Show the candidate the band when you make the offer. Transparency closes faster than bargaining.",
+      "Off-market comp is the second most common close-stage leak. For your role in your region, current market data shows the median, 25th, and 75th percentiles. Anchor your offer to the 60-75th percentile if you are hiring competitively. Below that, you lose anyone with another option. Above the 75th, you are paying for noise. Show the candidate the band when you make the offer. Transparency closes faster than bargaining.",
     artefactId: 'close-comp-data-report',
-    source: 'AI Jobs Index live data layer',
+    source: 'James MacDonald (Hiring Funnel Fix)',
   },
 
   // ============ ONBOARD ============

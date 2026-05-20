@@ -152,6 +152,28 @@ After "Day 14 complete" I asked myself what else was worth doing before James ge
 - **Custom OG image attempted via `next/og`.** Build broke on a Satori font resolution issue in Next 16. Reverted. Sharing now gives a text-only summary card (still respects the openGraph title/description set in layout). Building a real image is a 30-minute V2 task if it matters for launch.
 - **PDF table-artefact smoke test.** Generated a diagnostic where ASSESS was the worst leak so the AI picked `assess-weighted-scorecard` (the artefact with a markdown table). PDF rendered cleanly at 4 pages.
 
+## AI Jobs Index removal (2026-05-20)
+
+James decided the diagnostic should not cite AI Jobs Index as a salary data source (uncertain whether that data will exist there). Removed every reference.
+
+- **Code + site content** — clean. Salary/comp copy is now source-neutral ("market data", "market percentile", "current salary data").
+- **Re-attributed sourced claims** (CLAUDE.md principle 4 needs every claim sourced):
+  - `attract-2` question → NTP placement patterns
+  - `attract-3` question → James MacDonald (Hiring Funnel Fix)
+  - `close-2` question → James MacDonald (Hiring Funnel Fix). Text changed to "anchored to a specific market percentile from current salary data".
+  - `attract-sourcing-switch` recommendation → NTP placement intelligence
+  - `close-comp-reposition` recommendation → James MacDonald (Hiring Funnel Fix)
+  - Artefact source line in `close-comp-data-report` → "Australian salary guides, [date]"
+- **Env vars renamed**: `AI_JOBS_INDEX_API_URL/KEY` → `SALARY_API_URL/KEY` in `.env.example` and `.env.local`. These were never pushed to Vercel (always blank), so no Vercel cleanup needed.
+- **`SalaryData.source`** type literal changed `'ai-jobs-index'` → `'market-data'`.
+- **Fallback notice** now reads "Live market data is connecting. For now, the recommendation is the same."
+- **Docs**: README.md and CLAUDE.md updated (canonical sources list, V1 scope item, setup steps). CLAUDE.md line 51 left as-is — it references `aijobsindex.com.au` only as stack-lineage for the sister project, not as a salary source.
+- **BUILD_SPEC.md NOT rewritten.** It still has 11 AI Jobs Index mentions including all of Section 11 (the integration spec). Rewriting it is a re-spec, not a quick edit, and the replacement (averaged salary table) is not designed yet. **Follow-up: once the salary table is built, re-spec BUILD_SPEC.md Section 11.**
+
+### The salary feature is now dormant
+
+`lib/salary.ts` still exists as an optional API wrapper but no source is configured, so `SalaryCallout` always shows the fallback notice. The plan: James provides ~5 Australian salary guide PDFs (task #36), Claude reads them, averages role/region figures, builds `lib/salary-table.ts`, wires it into the result page. Site source line will read "Averaged across five 2026 Australian salary guides" with no publisher names. Until then, the CLOSE-stage salary band stays on the fallback notice.
+
 ## Final state checklist (for when you sit down to use this)
 
 - **Build**: `npm run build` clean. 10 routes (3 static + 7 dynamic).

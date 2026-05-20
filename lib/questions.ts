@@ -53,7 +53,7 @@ export const QUESTIONS: Question[] = [
     stage: 'attract',
     order: 2,
     text: 'Are your sourcing channels chosen based on where similar roles actually got filled, not defaults like LinkedIn?',
-    source: "AI Jobs Index data and NTP placement patterns",
+    source: "NTP placement patterns",
     whyItMatters: 'Default channels return default candidates. Targeted channels return targeted candidates.',
   },
   {
@@ -61,7 +61,7 @@ export const QUESTIONS: Question[] = [
     stage: 'attract',
     order: 3,
     text: 'Is your comp positioning anchored to a specific market percentile, not an intuitive number?',
-    source: "AI Jobs Index live data + James MacDonald (Hiring Funnel Fix)",
+    source: "James MacDonald (Hiring Funnel Fix)",
     whyItMatters: 'Comp set on intuition either underpays or overpays. Both leak.',
   },
   {
@@ -120,8 +120,8 @@ export const QUESTIONS: Question[] = [
     id: 'close-2',
     stage: 'close',
     order: 2,
-    text: 'Is your comp offer anchored to a specific AI Jobs Index percentile or equivalent live market data?',
-    source: "AI Jobs Index live data layer",
+    text: 'Is your comp offer anchored to a specific market percentile from current salary data?',
+    source: "James MacDonald (Hiring Funnel Fix)",
     whyItMatters: 'Off-market comp loses the candidate or signals weakness.',
   },
   {

@@ -75,7 +75,7 @@ export default function StageContext({ onSubmit, initial }: Props) {
           className="w-full px-3 py-2 border border-grey-medium rounded-md focus:outline-none focus:border-blue"
         />
         <p className="text-xs text-grey-medium mt-1">
-          Unlocks live AI Jobs Index salary data in the CLOSE stage.
+          Unlocks live salary data in the CLOSE stage.
         </p>
       </div>
       <button

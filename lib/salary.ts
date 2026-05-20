@@ -1,6 +1,8 @@
-// AI Jobs Index API wrapper.
+// Salary data API wrapper.
 // Returns null when the API key is missing or the call fails. Callers
 // should treat null as "data not available, show the fallback notice".
+// The salary band is moving to a built-in averaged table; this wrapper
+// stays as an optional override if a live source is configured later.
 
 import type { SalaryData } from './types';
 
@@ -10,8 +12,8 @@ export async function fetchSalaryData(
   role: string,
   region: string
 ): Promise<SalaryData | null> {
-  const baseUrl = process.env.AI_JOBS_INDEX_API_URL;
-  const apiKey = process.env.AI_JOBS_INDEX_API_KEY;
+  const baseUrl = process.env.SALARY_API_URL;
+  const apiKey = process.env.SALARY_API_KEY;
 
   if (!baseUrl || !apiKey || !role.trim() || !region.trim()) {
     return null;
@@ -43,7 +45,7 @@ export async function fetchSalaryData(
       p25: json.p25,
       p75: json.p75,
       currency: 'AUD',
-      source: 'ai-jobs-index',
+      source: 'market-data',
       asOf: typeof json.asOf === 'string' ? json.asOf : '',
       sampleSize:
         typeof json.sampleSize === 'number' ? json.sampleSize : undefined,

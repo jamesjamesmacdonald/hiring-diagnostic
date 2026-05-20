@@ -71,7 +71,7 @@ Two reference files sit alongside this CLAUDE.md. Read them when the task touche
 
 3. **The first answer is free.** The full diagnostic, the funnel visual, and the worst-leak recommendation are all free. Email gates the PDF download. Library contribution unlocks peer benchmarking and library search. The user never pays for the diagnosis.
 
-4. **Every claim is sourced.** Each question, each recommendation, and each piece of coaching cites either Michael's published writing, James's Hiring Funnel Fix, BTT Episode 1, or the AI Jobs Index. No unsupported assertions.
+4. **Every claim is sourced.** Each question, each recommendation, and each piece of coaching cites either Michael's published writing, James's Hiring Funnel Fix, BTT Episode 1, or NTP placement intelligence. No unsupported assertions.
 
 5. **The 7-minute target is a design constraint.** If a feature pushes the flow over 7 minutes, the feature loses.
 
@@ -106,7 +106,7 @@ Two reference files sit alongside this CLAUDE.md. Read them when the task touche
 4. Personalised PDF download (email-gated)
 5. Library contribution flow (unlocks peer benchmarking)
 6. Public library page with filters
-7. AI Jobs Index salary data in CLOSE stage
+7. Salary data in CLOSE stage
 8. Live peer benchmarking inline during diagnostic
 9. AI coaching on the forcing prompt (hedging detection + rewrite)
 

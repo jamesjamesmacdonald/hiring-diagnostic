@@ -46,7 +46,6 @@ You need three accounts before Claude Code can run the full build. Free tiers co
 1. **Vercel.** Sign up at vercel.com. Connect to your GitHub.
 2. **Supabase.** Sign up at supabase.com. Create a new project. Copy the URL and anon key into `.env.local`.
 3. **Anthropic API.** Sign up at console.anthropic.com. Generate an API key. Add it to `.env.local`.
-4. **AI Jobs Index API.** If you don't have this running yet, the CLOSE stage will work without it (just no live salary data). Add the key to `.env.local` when ready.
 
 ### Step 3: Run Claude Code
 
@@ -109,7 +108,7 @@ The diagnostic is built from existing source material. Every question and every 
 - **BTT Episode 1 with Michael Batko** (the podcast launching alongside this tool)
 - **Michael Batko's published writing** (7 posts on batko.ai and his Substack, plus 10 hiring principles)
 - **James MacDonald's Hiring Funnel Fix** (8-chapter playbook with the ALIGN Framework, 5 Questions Framework, Interview Scorecard, pre-close prompt, and 30-day Onboarding Playbook)
-- **The AI Jobs Index** (live salary and displacement data across Australian tech)
+- **NTP placement intelligence** (sourcing-channel and placement data from Australian tech hiring)
 
 See `BUILD_SPEC.md` Section 4 for the full source mapping.
 
