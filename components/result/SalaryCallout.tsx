@@ -1,7 +1,7 @@
-// Inline salary band card. Only used when:
-//   1. The user provided a role title in Step 1, AND
-//   2. The worst leak is CLOSE (live market data is most actionable there).
-// Renders the fallback notice when no salary data is available.
+// Inline salary band card. Shown when the worst leak is CLOSE and the user
+// gave a role title that matches a canonical band. National Australian
+// figures, averaged across six 2025-26 salary guides. Renders nothing when
+// there is no matching band.
 
 import type { SalaryData } from '@/lib/types';
 
@@ -13,38 +13,28 @@ const AUD = new Intl.NumberFormat('en-AU', {
 
 type Props = {
   data: SalaryData | null;
-  role: string;
-  region: string;
 };
 
-export default function SalaryCallout({ data, role, region }: Props) {
-  if (!data) {
-    return (
-      <section className="my-6 p-5 bg-grey-light rounded-md">
-        <p className="text-eyebrow text-blue uppercase mb-2">Market data</p>
-        <p className="text-sm text-navy">
-          Live market data is connecting. For now, the recommendation is the
-          same.
-        </p>
-      </section>
-    );
-  }
+export default function SalaryCallout({ data }: Props) {
+  if (!data) return null;
 
   return (
     <section className="my-6 p-5 bg-blue-light rounded-md">
-      <p className="text-eyebrow text-blue uppercase mb-2">Market data</p>
-      <h3 className="text-lg font-bold text-navy mb-2">
-        Live market data for {role} in {region}
+      <p className="text-eyebrow text-blue uppercase mb-2">Market benchmark</p>
+      <h3 className="text-lg font-bold text-navy mb-1">
+        {data.role}, Australia
       </h3>
+      <p className="text-xs text-grey-medium mb-3">
+        Base salary, national figures.
+      </p>
       <div className="grid grid-cols-3 gap-3 mb-3">
-        <Stat label="25th" value={AUD.format(data.p25)} />
+        <Stat label="Low" value={AUD.format(data.p25)} />
         <Stat label="Median" value={AUD.format(data.median)} bold />
-        <Stat label="75th" value={AUD.format(data.p75)} />
+        <Stat label="High" value={AUD.format(data.p75)} />
       </div>
       <p className="text-xs text-grey-medium">
         Anchor your offer to the 60-75th percentile if you are hiring
-        competitively. Source: Australian salary guides
-        {data.asOf ? `, ${data.asOf}` : ''}.
+        competitively. Averaged across six 2025-26 Australian salary guides.
       </p>
     </section>
   );

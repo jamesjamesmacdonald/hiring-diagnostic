@@ -170,9 +170,26 @@ James decided the diagnostic should not cite AI Jobs Index as a salary data sour
 - **Docs**: README.md and CLAUDE.md updated (canonical sources list, V1 scope item, setup steps). CLAUDE.md line 51 left as-is — it references `aijobsindex.com.au` only as stack-lineage for the sister project, not as a salary source.
 - **BUILD_SPEC.md NOT rewritten.** It still has 11 AI Jobs Index mentions including all of Section 11 (the integration spec). Rewriting it is a re-spec, not a quick edit, and the replacement (averaged salary table) is not designed yet. **Follow-up: once the salary table is built, re-spec BUILD_SPEC.md Section 11.**
 
-### The salary feature is now dormant
+### The salary table (2026-05-21)
 
-`lib/salary.ts` still exists as an optional API wrapper but no source is configured, so `SalaryCallout` always shows the fallback notice. The plan: James provides ~5 Australian salary guide PDFs (task #36), Claude reads them, averages role/region figures, builds `lib/salary-table.ts`, wires it into the result page. Site source line will read "Averaged across five 2026 Australian salary guides" with no publisher names. Until then, the CLOSE-stage salary band stays on the fallback notice.
+James provided 6 Australian salary guide PDFs in `~/Documents/Research - Competitors`. Built the averaged table.
+
+**Method:**
+- No poppler on the machine, so the Read tool could not render the PDFs. Installed `pdfplumber` (Python, user site-packages) and extracted text from all 6 guides to `/tmp/salary-extract/`.
+- Six parallel agents each extracted one guide's salary tables into structured rows (~1,250 rows total). Permanent annual base salary only; contractor day rates ignored.
+- The 6 guides are not directly comparable: 3 give low/median/high, 2 (Talenza, NTP) give low/high only, 1 (Onset) gives 50th/90th percentile only. Per-city guides (Emanate) averaged across cities; per-region guides (Talenza, NTP) averaged across their regions; per-seniority guides banded (junior low → senior high).
+- Aggregated into 21 canonical roles via `/tmp/aggregate-salary.py`. Each role's low/median/high is the mean across whichever guides carried that role (3 to 6 guides per role). Figures rounded to the nearest $1,000.
+- Result: `lib/salary-table.ts` — 21 national bands + a keyword matcher that maps a free-text role title to a canonical band.
+
+**Decisions:**
+- **National figures, not per-city.** 4 of 6 guides are national-only. Per-city precision would have been invented. `SalaryCallout` says "national figures" plainly.
+- **Guides are not named on the site.** Source line: "Averaged across six 2025-26 Australian salary guides." James asked for no publisher names (would read as endorsement of competitor recruiters).
+- **GTM/ops roles excluded.** These are tech salary guides; sales/CS coverage was thin and mixed base vs OTE. The table is engineering/product/data/leadership. If a user's role title matches nothing, the callout simply does not render.
+- **low/median/high mapped to p25/median/p75** in the `SalaryData` shape. Approximate — guide "low/high" is closer to a full range than a strict quartile. The callout labels them "Low / Median / High" honestly.
+- The old `lib/salary.ts` API wrapper is gone; it now reads the static table. `SALARY_API_URL/KEY` env vars removed (no API anymore).
+- The raw PDFs stay in `~/Documents/Research - Competitors` (outside the repo, not committed). Re-run `/tmp/aggregate-salary.py` to regenerate if guides are refreshed.
+
+Task #36 is now done.
 
 ## Final state checklist (for when you sit down to use this)
 

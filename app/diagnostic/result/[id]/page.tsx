@@ -139,13 +139,7 @@ export default async function ResultPage({ params }: { params: Params }) {
           </p>
         )}
 
-        {showSalary && (
-          <SalaryCallout
-            data={salaryData}
-            role={r.role_title ?? ''}
-            region={r.region}
-          />
-        )}
+        {showSalary && <SalaryCallout data={salaryData} />}
 
         {artefact && <ArtefactBlock artefact={artefact} />}
 
