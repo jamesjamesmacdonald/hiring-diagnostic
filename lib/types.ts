@@ -35,7 +35,7 @@ export interface SalaryData {
   p25: number;
   p75: number;
   currency: 'AUD';
-  source: 'market-data';
+  source: string; // human-readable source line, shown on the result page
   asOf: string;
   sampleSize?: number;
 }

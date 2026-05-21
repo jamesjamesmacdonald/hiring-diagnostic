@@ -1,9 +1,10 @@
-// Salary data lookup. Backed by a static table averaged from six 2025-26
-// Australian tech salary guides (lib/salary-table.ts). National figures.
+// Salary data lookup. Backed by a static table averaged from 2025-26
+// Australian salary guides plus market data for newer AI roles
+// (lib/salary-table.ts). National figures.
 // Returns null when the role title matches no canonical band.
 
 import type { SalaryData } from './types';
-import { matchSalaryBand } from './salary-table';
+import { matchSalaryBand, sourceLabel } from './salary-table';
 
 export async function fetchSalaryData(
   role: string,
@@ -18,7 +19,7 @@ export async function fetchSalaryData(
     p25: band.low,
     p75: band.high,
     currency: 'AUD',
-    source: 'market-data',
+    source: sourceLabel(band),
     asOf: '2025-26',
   };
 }

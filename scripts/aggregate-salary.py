@@ -133,6 +133,21 @@ for role, rows in ROLES.items():
         "median": avg(meds),
         "high": avg(highs),
         "guides": sources,
+        "basis": "guides",
     }
+
+# AI-specific roles. Not covered by the six PDF guides. Bands derived from
+# 2025-26 Australian market aggregators (Glassdoor, ERI SalaryExpert, Jora)
+# via web search, plus the dbreunig.com AI-titles taxonomy.
+# Forward Deployed Engineer: generic FDE AU avg ~108k (p25 91k / p75 148k);
+#   AI FDE (ERI Sydney) entry ~141k / avg ~200k / senior ~229k. Banded senior-leaning.
+# Prompt Engineer: AU avg ~94-100k; entry ~56-75k; senior ~112-168k; city avgs 105-120k.
+# AI Research Scientist: AU avg ~148k; entry ~100-117k; senior ~178-189k; range 130-180k.
+AI_ROLES_WEB = {
+    "Forward Deployed Engineer": {"low": 125000, "median": 170000, "high": 220000, "basis": "market"},
+    "Prompt Engineer": {"low": 70000, "median": 105000, "high": 150000, "basis": "market"},
+    "AI Research Scientist": {"low": 115000, "median": 150000, "high": 190000, "basis": "market"},
+}
+out.update(AI_ROLES_WEB)
 
 print(json.dumps(out, indent=2))

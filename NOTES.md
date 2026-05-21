@@ -191,6 +191,28 @@ James provided 6 Australian salary guide PDFs in `~/Documents/Research - Competi
 
 Task #36 is now done.
 
+### AI-specific roles added (2026-05-21)
+
+James asked for AI roles that early-stage startups hire, since Michael's audience skews startup/scaleup. Added 3:
+
+| Role | Low | Median | High |
+|---|---|---|---|
+| Forward Deployed Engineer | 125k | 170k | 220k |
+| Prompt Engineer | 70k | 105k | 150k |
+| AI Research Scientist | 115k | 150k | 190k |
+
+**Sourcing:** the six PDF guides do not cover these newer titles. Figures come from 2025-26 Australian market aggregators (Glassdoor, ERI SalaryExpert, Jora) via web search, plus the dbreunig.com AI-titles taxonomy. Because the basis differs from the guide-sourced roles, each `SalaryBand` now has a `basis` field (`'guides'` or `'market'`), and the result-page callout shows the matching source line per role:
+- guides → "Averaged across six 2025-26 Australian salary guides."
+- market → "Based on 2025-26 Australian market salary data."
+
+This keeps every figure honestly cited (CLAUDE.md principle 4) — the AI roles do not falsely claim to come from the six guides.
+
+**Decisions:**
+- Forward Deployed Engineer banded senior-leaning. Generic "FDE" reads ~$108k average, but the AI-startup version of the role (customer-facing applied engineer) reads much higher — ERI's "AI Forward Deployed Engineer" shows entry ~$141k, average ~$200k, senior ~$229k. The 125/170/220 band reflects the AI-startup version, which is what Michael's audience would hire.
+- "Applied AI Engineer" and "Applied AI Solution Architect" (from the dbreunig taxonomy) were NOT given separate bands — they fold into "Machine Learning / AI Engineer" and "Solutions Architect" via matcher keywords. Adding separate near-duplicate bands would be false precision.
+- The 3 aijobsaustralia.com.au blog URLs James linked returned only page navigation to WebFetch (JS-rendered article bodies did not load). The dbreunig.com AI-titles article loaded fine and gave the role taxonomy. Salary figures came from web search instead.
+- `aggregate-salary.py` carries the AI roles in a separate `AI_ROLES_WEB` block with the sourcing reasoning in comments.
+
 ## Final state checklist (for when you sit down to use this)
 
 - **Build**: `npm run build` clean. 10 routes (3 static + 7 dynamic).

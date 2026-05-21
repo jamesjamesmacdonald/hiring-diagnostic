@@ -34,7 +34,7 @@ export default function SalaryCallout({ data }: Props) {
       </div>
       <p className="text-xs text-grey-medium">
         Anchor your offer to the 60-75th percentile if you are hiring
-        competitively. Averaged across six 2025-26 Australian salary guides.
+        competitively. {data.source}
       </p>
     </section>
   );
