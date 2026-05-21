@@ -89,7 +89,7 @@ export default function ForcingPrompt({
     <section>
       <p className="text-eyebrow text-blue uppercase mb-2">Final step</p>
       <h1 className="text-3xl font-bold text-navy mb-4">
-        Write your success criterion.
+        Write your success criteria.
       </h1>
       <p className="text-base text-black mb-2">One sentence, in this form:</p>
       <p className="text-sm text-navy bg-blue-light rounded p-3 mb-6">

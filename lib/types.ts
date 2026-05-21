@@ -2,7 +2,7 @@
 // Imported by every other lib file and by all components.
 
 export type Stage = 'pre-seed' | 'seed' | 'series-a' | 'series-b-plus';
-export type RoleType = 'engineer' | 'gtm' | 'ops' | 'leadership' | 'other';
+export type RoleType = 'engineer' | 'product' | 'gtm' | 'ops' | 'leadership' | 'other';
 export type Region = 'sydney' | 'melbourne' | 'brisbane' | 'other-au';
 export type Response = 'no' | 'partial' | 'mostly' | 'yes-documented';
 export type FunnelStage = 'align' | 'attract' | 'assess' | 'close' | 'onboard';
@@ -135,6 +135,7 @@ export const COMPANY_STAGE_LABELS: Record<Stage, string> = {
 
 export const ROLE_TYPE_LABELS: Record<RoleType, string> = {
   'engineer': 'Engineer',
+  'product': 'Product',
   'gtm': 'Go-to-market (sales, marketing, growth)',
   'ops': 'Operations',
   'leadership': 'Leadership / management',

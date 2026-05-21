@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS diagnostic_results (
 
   -- Context
   company_stage TEXT NOT NULL CHECK (company_stage IN ('pre-seed', 'seed', 'series-a', 'series-b-plus')),
-  role_type TEXT NOT NULL CHECK (role_type IN ('engineer', 'gtm', 'ops', 'leadership', 'other')),
+  role_type TEXT NOT NULL CHECK (role_type IN ('engineer', 'product', 'gtm', 'ops', 'leadership', 'other')),
   region TEXT NOT NULL CHECK (region IN ('sydney', 'melbourne', 'brisbane', 'other-au')),
   role_title TEXT, -- Free text. Used for salary lookup.
 

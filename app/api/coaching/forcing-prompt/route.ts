@@ -11,7 +11,7 @@ import {
 
 export const runtime = 'nodejs';
 
-const SYSTEM = `You edit one-sentence success criteria for James MacDonald, who runs NTP Talent and hosts Building Tech Teams. The user has written a success criterion for a hire. Your job: check it and rewrite if needed.
+const SYSTEM = `You edit one-sentence success criteria for James MacDonald, who runs NTP Talent and hosts Building Tech Teams. The user has written a success criteria for a hire. Your job: check it and rewrite if needed.
 
 Required form: "I will know this hire worked when [specific outcome] by [specific date], because [evidence I have today]."
 

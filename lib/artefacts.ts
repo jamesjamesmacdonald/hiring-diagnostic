@@ -71,7 +71,7 @@ export const ARTEFACTS: Artefact[] = [
 
 - Base: $[X], anchored at the [Y]th percentile of current market data
 - Equity: [X]% with [Y]-year vest
-- Benefits: Claude Max subscription, AI tooling budget $[X], learning budget $[X]
+- Benefits: learning budget $[X], AI tooling access, flexible working
 
 **How to apply**
 
@@ -82,19 +82,39 @@ No CV required.`,
 
   {
     id: 'attract-sourcing-data-report',
-    title: 'Sourcing Channel Recommendation',
-    content: `**Top 3 channels for this role and region** (based on placement data, last 90 days):
+    title: 'Sell-the-Role Job Ad Template',
+    content: `**Role:** [Title]
+**Team:** [Who they join]
 
-1. **[Channel 1]** — [why it works for this role]
-2. **[Channel 2]** — [why it works for this role]
-3. **[Channel 3]** — [why it works for this role]
+---
 
-**Pick one. Run it for 30 days. Track:**
-- Candidates surfaced
-- Qualified candidates (passed initial screen)
-- Conversion to interview
+**Why this role**
 
-If conversion to interview is above 20%, double down. Below, switch to channel two.`,
+[Two or three sentences. The problem this person will own. Why it matters to the company right now. What changes if they get it right.]
+
+**What you will work on**
+
+[Three outcomes the hire will have delivered in their first six months. Outcomes, not tasks.]
+
+**Who you will work with**
+
+[Name the team and the founder. What the hire will learn from the people around them.]
+
+**What we offer**
+
+- Base: $[X], anchored to the [Y]th percentile of the market for this role and region
+- Equity: [X]% with [Y]-year vest
+- Benefits: [what candidates weigh today: learning budget, flexibility, AI tooling access]
+
+**The work itself**
+
+[Now the day-to-day. Tasks go here, last, not first.]
+
+**How to apply**
+
+Send a short answer to this question: [One question that tests the behavioural signal from your scorecard.]
+
+No CV required.`,
   },
 
   {
@@ -179,23 +199,44 @@ If conversion to interview is above 20%, double down. Below, switch to channel t
 
   {
     id: 'close-comp-data-report',
-    title: 'Comp Benchmarking Report',
+    title: 'Offer Construction Worksheet',
     content: `**Role:** [Title]
 **Region:** [Region]
-**Source:** Australian salary guides, [date]
 
-**Live market data:**
+---
+
+**1. Anchor the comp**
+
+Market band for this role and region:
 - 25th percentile: $[X]
 - Median: $[Y]
 - 75th percentile: $[Z]
 
-**Recommendation.** Anchor offer to the 60-75th percentile if hiring competitively. Below the 25th, you will lose anyone with a competing option. Above the 75th, you are paying for noise.
+Anchor the offer to the 60-75th percentile if you are hiring competitively. Below the 25th, you lose anyone with a competing option. Above the 75th, you are paying for noise. Show the candidate the band when you make the offer.
 
-**Show the candidate the band when you make the offer.** Transparency closes faster than bargaining.
+**2. Address the motivator**
+
+What the candidate told you matters most in the pre-close conversation:
+[Their stated motivator. Scope, growth, comp, flexibility, mission.]
+
+How the offer answers it:
+[One specific line. If scope, name the scope. If growth, name the path and who they learn from.]
+
+**3. Prepare the counter-offer response**
+
+The counter-offer their current employer is most likely to make:
+[What you expect.]
+
+Your response, decided now:
+[Your answer, written before you send the offer. Not improvised in the moment.]
+
+---
 
 **Justification language for the offer letter:**
 
-"Your base of $[X] sits at the [Y]th percentile of the live market for this role in [region], based on current market data as of [date]. We anchor here because [reason: speed, signal, stage]."`,
+"Your base of $[X] sits at the [Y]th percentile of the market for this role in [region]. We anchor here because [reason: speed, signal, stage]."
+
+Send the offer within 48 hours of the pre-close conversation. Decision deadline within 5 days.`,
   },
 
   {

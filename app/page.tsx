@@ -20,8 +20,8 @@ export default function Home() {
         </a>
         <div className="mt-10 pt-8 border-t border-grey-light">
           <p className="text-sm text-grey-medium mb-3">
-            Built by James MacDonald at NTP Talent. Co-launches with Building
-            Tech Teams Episode 1.
+            A partnership between Michael Batko, Hourglass AI and James
+            MacDonald, Building Tech Teams, NTP Talent.
           </p>
           <a
             href="/library"
