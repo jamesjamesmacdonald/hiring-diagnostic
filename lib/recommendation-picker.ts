@@ -12,7 +12,7 @@ import {
 import { questionsForStage } from './questions';
 import { recommendationsForStage } from './recommendations';
 import { RESPONSE_OPTIONS } from './types';
-import type { FunnelStage, QuestionAnswer } from './types';
+import type { FunnelStage, QuestionAnswer, Recommendation } from './types';
 
 export type PickResult = {
   selectedRecommendationId: string;
@@ -105,4 +105,34 @@ export async function pickRecommendation(
       reasoning: 'Default match (AI unavailable).',
     };
   }
+}
+
+// Deterministic per-stage recommendation pick. No Claude call.
+// Used for the non-worst stages on the result page, where a fast,
+// stable pick is enough. Picks the recommendation whose trigger
+// questions the user scored lowest on; falls back to the first.
+export function pickStageRecommendation(
+  stage: FunnelStage,
+  answers: QuestionAnswer[]
+): Recommendation {
+  const recs = recommendationsForStage(stage);
+  const lowScored = new Set(
+    answers
+      .filter((a) => a.response === 'no' || a.response === 'partial')
+      .map((a) => a.questionId)
+  );
+  let best = recs[0];
+  let bestCount = -1;
+  for (const rec of recs) {
+    const ids =
+      rec.triggerPattern.match(
+        /(?:align|attract|assess|close|onboard)-\d/g
+      ) ?? [];
+    const count = ids.filter((qid) => lowScored.has(qid)).length;
+    if (count > bestCount) {
+      bestCount = count;
+      best = rec;
+    }
+  }
+  return best;
 }

@@ -1,15 +1,16 @@
-// Result page. Reads diagnostic row from Supabase by id and renders:
+// Result page. Reads the diagnostic row from Supabase by id and renders:
 // - Header with context line
 // - FunnelVisual with worst-leak treatment
-// - Recommendation headline + fix script
-// - Artefact block with copy-to-clipboard
-// Day 8 adds PDFDownload. Day 10 adds LibraryUnlock. Day 9 adds salary callout.
+// - The worst-leak fix (recommendation + artefact), free, no email
+// - OtherLeaks: the other 4 stages behind one email gate, plus full-report download
+// - LibraryUnlock and the conditional NTP / Building Tech Teams CTA
 
 import { notFound } from 'next/navigation';
 import { getSupabase } from '@/lib/supabase';
 import { recommendationById } from '@/lib/recommendations';
 import { artefactById } from '@/lib/artefacts';
 import { stageStatus } from '@/lib/scoring';
+import { pickStageRecommendation } from '@/lib/recommendation-picker';
 import {
   COMPANY_STAGE_LABELS,
   FUNNEL_STAGES,
@@ -28,7 +29,7 @@ import type {
 import FunnelVisual from '@/components/result/FunnelVisual';
 import RecommendationBlock from '@/components/result/Recommendation';
 import ArtefactBlock from '@/components/result/ArtefactBlock';
-import PDFDownload from '@/components/result/PDFDownload';
+import OtherLeaks, { type OtherLeak } from '@/components/result/OtherLeaks';
 import SalaryCallout from '@/components/result/SalaryCallout';
 import LibraryUnlock from '@/components/result/LibraryUnlock';
 import NTPCallout, { ntpCtaFor } from '@/components/result/NTPCallout';
@@ -49,6 +50,7 @@ type DiagnosticRow = {
   recommendation_id: string;
   forcing_prompt: string | null;
   answers: QuestionAnswer[];
+  email: string | null;
   created_at: string;
 };
 
@@ -72,9 +74,7 @@ export default async function ResultPage({ params }: { params: Params }) {
   const r = data as DiagnosticRow;
 
   const stageScores: StageScore[] = FUNNEL_STAGES.map((stage) => {
-    const score = (r[
-      `${stage}_score` as keyof DiagnosticRow
-    ] as number) ?? 0;
+    const score = (r[`${stage}_score` as keyof DiagnosticRow] as number) ?? 0;
     return {
       stage,
       score,
@@ -83,11 +83,26 @@ export default async function ResultPage({ params }: { params: Params }) {
     };
   });
 
+  // Worst-leak fix: the recommendation Claude picked at submit time.
   const rec = recommendationById(r.recommendation_id);
   const artefact = rec ? artefactById(rec.artefactId) : undefined;
 
-  // Salary data: only relevant when the user gave a role title and CLOSE is
-  // the worst leak. Otherwise we do not surface it.
+  // Other 4 stages: a deterministic pick each, ranked worst-first.
+  const otherLeaks: OtherLeak[] = stageScores
+    .filter((s) => s.stage !== r.worst_leak)
+    .sort((a, b) => a.score - b.score)
+    .map((s) => {
+      const stageRec = pickStageRecommendation(s.stage, r.answers);
+      return {
+        stage: s.stage,
+        score: s.score,
+        status: s.status,
+        recommendation: stageRec,
+        artefact: artefactById(stageRec.artefactId) ?? null,
+      };
+    });
+
+  // Salary data: only when the user gave a role title and CLOSE is worst.
   const showSalary = r.worst_leak === 'close' && Boolean(r.role_title);
   const salaryData = showSalary
     ? await fetchSalaryData(r.role_title ?? '', r.region)
@@ -108,6 +123,8 @@ export default async function ResultPage({ params }: { params: Params }) {
 
   const worstScore =
     (r[`${r.worst_leak}_score` as keyof DiagnosticRow] as number) ?? 0;
+
+  const ntpCta = ntpCtaFor(r.company_stage, worstScore);
 
   return (
     <main className="min-h-screen bg-white">
@@ -143,14 +160,15 @@ export default async function ResultPage({ params }: { params: Params }) {
 
         {artefact && <ArtefactBlock artefact={artefact} />}
 
-        <PDFDownload resultId={r.id} />
+        <OtherLeaks
+          resultId={r.id}
+          leaks={otherLeaks}
+          unlockedInitially={Boolean(r.email)}
+        />
 
         <LibraryUnlock resultId={r.id} />
 
-        {(() => {
-          const cta = ntpCtaFor(r.company_stage, worstScore);
-          return cta ? <NTPCallout cta={cta} /> : null;
-        })()}
+        {ntpCta && <NTPCallout cta={ntpCta} />}
 
         <hr className="my-10 border-grey-light" />
 

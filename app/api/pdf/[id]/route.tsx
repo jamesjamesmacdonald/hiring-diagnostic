@@ -1,12 +1,15 @@
 // GET /api/pdf/[id]?email=optional@example.com
-// Renders the 4-page PDF for a diagnostic row. If an email query param is
-// present and the row has none, save it so we know the user requested the PDF.
+// Renders the full-report PDF (cover, funnel, all five stage fixes).
+// If an email query param is present and the row has none, save it.
 
 import { renderToBuffer } from '@react-pdf/renderer';
-import DiagnosticPDF from '@/components/pdf/DiagnosticPDF';
+import DiagnosticPDF, { type StageFix } from '@/components/pdf/DiagnosticPDF';
 import { getSupabase } from '@/lib/supabase';
 import { recommendationById } from '@/lib/recommendations';
 import { artefactById } from '@/lib/artefacts';
+import { pickStageRecommendation } from '@/lib/recommendation-picker';
+import { FUNNEL_STAGES } from '@/lib/types';
+import type { QuestionAnswer } from '@/lib/types';
 
 export const runtime = 'nodejs';
 
@@ -38,24 +41,34 @@ export async function GET(req: Request, { params }: { params: Params }) {
       .eq('id', id);
   }
 
-  const rec = recommendationById(data.recommendation_id);
-  const artefact = rec ? artefactById(rec.artefactId) : undefined;
+  const answers = (data.answers ?? []) as QuestionAnswer[];
+  const worstRec = recommendationById(data.recommendation_id);
 
-  if (!rec || !artefact) {
-    return new Response(
-      JSON.stringify({ error: 'Recommendation or artefact missing' }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
-    );
-  }
+  // All five stages, each with a recommendation + artefact, ranked worst-first.
+  const fixes: StageFix[] = FUNNEL_STAGES.map((stage) => {
+    const score = (data[`${stage}_score`] as number) ?? 0;
+    const isWorstLeak = stage === data.worst_leak;
+    const rec =
+      isWorstLeak && worstRec
+        ? worstRec
+        : pickStageRecommendation(stage, answers);
+    return {
+      stage,
+      score,
+      isWorstLeak,
+      recommendation: rec,
+      artefact: artefactById(rec.artefactId) ?? null,
+    };
+  }).sort((a, b) => a.score - b.score);
 
   const buffer = await renderToBuffer(
-    <DiagnosticPDF row={data} recommendation={rec} artefact={artefact} />
+    <DiagnosticPDF row={data} fixes={fixes} />
   );
 
   return new Response(new Uint8Array(buffer), {
     headers: {
       'Content-Type': 'application/pdf',
-      'Content-Disposition': `attachment; filename="hiring-diagnostic-${id.slice(0, 8)}.pdf"`,
+      'Content-Disposition': `attachment; filename="hiring-funnel-report-${id.slice(0, 8)}.pdf"`,
       'Cache-Control': 'private, no-store',
     },
   });
