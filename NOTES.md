@@ -227,3 +227,5 @@ If you want to flip any of the upfront assumptions at the top, the affected comp
 
 
 
+
+<!-- auto-deploy wiring test: 2026-05-21T01:04Z -->
